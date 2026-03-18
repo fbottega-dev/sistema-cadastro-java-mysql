@@ -12,20 +12,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // desativa CSRF para teste simples
             .authorizeHttpRequests(auth -> auth
-                // libera apenas rota de cadastro, se quiser
-                .requestMatchers("/usuarios/register").permitAll() 
-                // qualquer outra rota exige login
+                .requestMatchers("/usuarios/register").permitAll() // libera registro
+                .requestMatchers("/usuarios/login").permitAll() // libera login
                 .anyRequest().authenticated()
             )
-            // ativa o formLogin automático do Spring Security
-            .formLogin()  
-            .defaultSuccessUrl("/usuarios/home", true) // opcional: página após login
-            .permitAll()
-            // logout permitido para todos
-            .and()
-            .logout().permitAll();
+            .formLogin().disable(); // desativa o login form automático do Spring
 
         return http.build();
     }

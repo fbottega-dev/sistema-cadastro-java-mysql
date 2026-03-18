@@ -1,0 +1,54 @@
+/* estilo geral */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* container centralizado */
+.container {
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 300px;
+    text-align: center;
+}
+
+/* título */
+h2, h1 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* inputs */
+input {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* botão */
+button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

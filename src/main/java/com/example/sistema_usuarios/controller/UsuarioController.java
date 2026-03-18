@@ -3,44 +3,38 @@ package com.example.sistema_usuarios.controller;
 import com.example.sistema_usuarios.model.Usuario;
 import com.example.sistema_usuarios.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
+@CrossOrigin(origins = "http://127.0.0.1:5500") // porta do Live Server
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    // Criar usuário
-    @PostMapping
-    public Usuario criar(@RequestBody Usuario usuario) {
-        usuario.setSenha(encoder.encode(usuario.getSenha()));
-        return repository.save(usuario);
-    }
-
-    // Listar usuários (liberado para teste)
-    @GetMapping
-    public List<Usuario> listar() {
-        return repository.findAll();
-    }
-
-    // LOGIN SIMPLES 
-    @PostMapping("/login")
-    public String login(@RequestBody Usuario usuario) {
-        Optional<Usuario> user = repository.findByEmail(usuario.getEmail());
-
-        if (user.isPresent() && encoder.matches(usuario.getSenha(), user.get().getSenha())) {
-            return "Login OK!";  //  Retorna apenas uma mensagem de sucesso
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody Usuario usuario) {
+        if(usuarioRepository.existsByUsername(usuario.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe!");
         }
+        usuario.setPassword(encoder.encode(usuario.getPassword()));
+        usuarioRepository.save(usuario);
+        return ResponseEntity.ok("Usuário registrado com sucesso!");
+    }
 
-        return "Email ou senha inválidos"; //  Login falhou
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Usuario usuario) {
+        Usuario u = usuarioRepository.findByUsername(usuario.getUsername());
+        if(u != null && encoder.matches(usuario.getPassword(), u.getPassword())) {
+            return ResponseEntity.ok("Login realizado com sucesso!");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou senha incorretos!");
+        }
     }
 }
