@@ -41,10 +41,10 @@ Frontend básico funciona com fetch API para se comunicar com o backend
 As páginas possuem links entre login e registro para facilitar a navegação
 
 ### Tela de Login
-![Login](img/login.png)
+![Login](login.png)
 
 #### Registro
-![Registro](img/registrar.png)
+![Registro](registrar.png)
 
 #### Registro
-![Registro](img/dashboard.png)
+![Registro](dashboard.png)
