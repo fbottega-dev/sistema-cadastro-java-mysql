@@ -1,23 +1,50 @@
-# Sistema de Usuários - Spring Boot
+## Sistema de Usuários - Spring Boot + Frontend
+Sistema de gerenciamento de usuários com autenticação via Spring Security, registro e login funcionando com MySQL, e frontend básico em HTML/JS/CSS.
 
-Sistema de gerenciamento de usuários com autenticação via Spring Security.
+---
 
 ## Funcionalidades
-- Cadastro de usuários
-- Login com Spring Security (tela padrão)
-- Criptografia de senhas com BCrypt
-- API REST básica para usuários
+Cadastro de usuários (nome e senha)
+Login com Spring Security
+Criptografia de senhas com BCrypt
+Dashboard simples após login
+API REST básica para usuários
+Frontend básico com páginas:
+login.html
+register.html
+dashboard.html
+Validação de login e registro via backend
+
+---
 
 ## Tecnologias
-- Java 17
-- Spring Boot 3.2
-- Spring Data JPA
-- MySQL
-- Maven
+Java 17
+Spring Boot 3.2
+Spring Data JPA
+Spring Security
+MySQL
+Maven
+HTML, CSS e JavaScript para frontend
 
-## Como rodar
-1. Clonar o repositório
-2. Criar banco `sistema_usuarios` no MySQL
-3. Copiar `application.properties.example` para `application.properties` e preencher os dados
-4. Rodar a aplicação: `mvn spring-boot:run`
-5. Acessar: `http://localhost:8080/usuarios` e fazer login
+---
+
+## Endpoints da API
+POST /usuarios/register – registra novo usuário
+POST /usuarios/login – login de usuário
+GET /usuarios/home – dashboard (apenas após login)
+
+---
+
+## Observações:
+Senhas são criptografadas com BCrypt antes de salvar no banco
+Frontend básico funciona com fetch API para se comunicar com o backend
+As páginas possuem links entre login e registro para facilitar a navegação
+
+### Tela de Login
+![Login](img/login.png)
+
+#### Registro
+![Registro](img/registrar.png)
+
+#### Registro
+![Registro](img/dashboard.png)
