@@ -46,5 +46,5 @@ As páginas possuem links entre login e registro para facilitar a navegação
 #### Registro
 ![Registro](registrar.png)
 
-#### Registro
+#### Dashboard
 ![Registro](dashboard.png)
