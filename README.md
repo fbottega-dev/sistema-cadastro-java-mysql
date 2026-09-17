@@ -1,50 +1,103 @@
-## Sistema de Usuários - Spring Boot + Frontend
-Sistema de gerenciamento de usuários com autenticação via Spring Security, registro e login funcionando com MySQL, e frontend básico em HTML/JS/CSS.
+# Portal de cadastro e autenticação
 
----
+[![Java CI](https://github.com/fbottega-dev/sistema-cadastro-java-mysql/actions/workflows/ci.yml/badge.svg)](https://github.com/fbottega-dev/sistema-cadastro-java-mysql/actions/workflows/ci.yml)
+
+Evolução de um projeto de cadastro Java: o login agora cria uma sessão autenticada de verdade, com proteção CSRF, validação de entrada e testes de acesso ao painel.
+
+**Stack:** Java 21 · Spring Boot 3.5 · Spring Security · JPA/Hibernate · MySQL 8.4 · Flyway · JUnit · Docker.
+
+![Aplicação em execução](docs/preview.png)
 
 ## Funcionalidades
-Cadastro de usuários (nome e senha)
-Login com Spring Security
-Criptografia de senhas com BCrypt
-Dashboard simples após login
-API REST básica para usuários
-Frontend básico com páginas:
-login.html
-register.html
-dashboard.html
-Validação de login e registro via backend
 
----
+- Cadastro com validação, usuário único e hash BCrypt; senha nunca é retornada pela API.
+- Login com sessão HTTP, cookie HttpOnly/SameSite e logout com invalidação da sessão.
+- Interface responsiva servida pela própria aplicação, sem configuração de CORS.
+- Painel que consulta uma rota protegida e identifica o usuário autenticado.
+- Erros de validação e conflito retornados como respostas HTTP apropriadas.
 
-## Tecnologias
-Java 17
-Spring Boot 3.2
-Spring Data JPA
-Spring Security
-MySQL
-Maven
-HTML, CSS e JavaScript para frontend
+## Executar em 3 minutos — sem instalar banco
 
----
+Requisito: **JDK 21** configurado em JAVA_HOME. O Maven Wrapper está incluído.
 
-## Endpoints da API
-POST /usuarios/register – registra novo usuário
-POST /usuarios/login – login de usuário
-GET /usuarios/home – dashboard (apenas após login)
+No Windows (PowerShell):
 
----
+```powershell
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=demo" "-Dspring-boot.run.arguments=--server.port=8080"
+```
 
-## Observações:
-Senhas são criptografadas com BCrypt antes de salvar no banco
-Frontend básico funciona com fetch API para se comunicar com o backend
-As páginas possuem links entre login e registro para facilitar a navegação
+No Linux/macOS:
 
-### Tela de Login
-![Login](login.png)
+```bash
+chmod +x mvnw
+./mvnw spring-boot:run -Dspring-boot.run.profiles=demo -Dspring-boot.run.arguments=--server.port=8080
+```
 
-#### Registro
-![Registro](registrar.png)
+Abra **http://localhost:8080**. O perfil demo usa H2 em memória: os dados são apagados ao encerrar.
 
-#### Dashboard
-![Registro](dashboard.png)
+| Usuário | Senha de demonstração | Perfil |
+|---|---|---|
+| cliente | Demo12345! | Cliente |
+| tecnico | Demo12345! | Técnico |
+
+Essas contas são criadas somente com o perfil demo. Não ative esse perfil em uma instalação pública.
+
+## Executar com MySQL e Docker
+
+```bash
+cp .env.example .env
+# Defina DB_PASSWORD no arquivo .env.
+docker compose up --build -d
+```
+
+No PowerShell, use `Copy-Item .env.example .env` no lugar de cp. Abra http://localhost:8080 e cadastre uma conta. O banco persiste no volume do Compose; `docker compose down` mantém os dados.
+
+
+As migrations criam um **banco novo**. Para reaproveitar um banco de versões antigas, faça backup e planeje a migração antes de apontar a aplicação para ele. Não há migração automática dos dados legados.
+
+## Testes
+
+```powershell
+.\mvnw.cmd verify
+```
+
+4 testes JUnit verificam autenticação e entradas inválidas. O banco H2 de teste é criado por Flyway. No Actions, um teste HTTP adicional sobe a aplicação em Docker com **MySQL real**.
+
+Para executar esse teste com o Compose já ativo e Node.js 22: `node scripts/smoke.mjs`.
+
+## API
+
+| Método | Rota | Finalidade |
+|---|---|---|
+| GET | /csrf | Obter token e cookie de sessão |
+| POST | /usuarios/register | Criar usuário (JSON: username, password) |
+| POST | /usuarios/login | Login (form-urlencoded: username, password) |
+| GET | /usuarios/me | Consultar usuário autenticado |
+| POST | /usuarios/logout | Invalidar sessão |
+
+
+Para POST, mantenha o cookie e envie o token no header retornado por /csrf. Obtenha novo token depois do login/logout. Consulte exemplos em [docs/API.md](docs/API.md).
+
+## Organização e decisões
+
+```text
+controller/  HTTP, DTOs e validação
+service/     regras e transações
+repository/  acesso ao banco via JPA
+model/       entidades persistidas
+config/      segurança e dados demo
+resources/db/migration/  schema versionado
+resources/static/       HTML, CSS e JavaScript
+```
+
+Sessão foi escolhida porque interface e backend compartilham a mesma origem. Spring Security executa a autenticação; conferir BCrypt e retornar uma mensagem não autentica as próximas requisições.
+
+## Limitações e próximos passos
+
+- Projeto de portfólio para execução local; não há hospedagem pública incluída.
+- Sem recuperação de senha, verificação de e-mail ou limitação de tentativas de login.
+- Senhas aceitam de 8 a 64 caracteres ASCII para respeitar o limite de bytes do BCrypt.
+- Para exposição pública: HTTPS, cookie Secure, proteção contra força bruta e gestão de segredos.
+- Não inclui edição de perfil ou administração de usuários.
+
+[Requisitos e evolução](docs/ROADMAP.md) · [Uso de IA e revisão](docs/AI_USAGE.md)

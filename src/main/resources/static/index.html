@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Portal de usuários</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <header>
+      <strong>Acesso / Portal</strong
+      ><small>Projeto de portfólio · fbottega-dev</small>
+    </header>
+    <main class="layout">
+      <span class="eyebrow">Identidade e acesso</span>
+      <h1>Seu acesso começa aqui.</h1>
+      <p>
+        Cadastro e autenticação com sessão, validação de dados e controle de
+        acesso.
+      </p>
+      <div id="notice" role="status" aria-live="polite"></div>
+      <section id="guest" class="grid">
+        <form id="login" class="card">
+          <h2>Entrar na conta</h2>
+          <p class="muted">Use suas credenciais para continuar.</p>
+          <label for="username">Usuário</label
+          ><input
+            id="username"
+            name="username"
+            required
+            autocomplete="username"
+          /><label for="password">Senha</label
+          ><input
+            id="password"
+            name="password"
+            type="password"
+            required
+            autocomplete="current-password"
+          /><button>Entrar</button>
+        </form>
+        <form id="register" class="card">
+          <h2>Criar uma conta</h2>
+          <p class="muted">
+            Usuário de 3 a 50 caracteres; senha de 8 a 64 caracteres ASCII.
+          </p>
+          <label for="new-user">Usuário</label
+          ><input
+            id="new-user"
+            name="username"
+            required
+            pattern="[a-zA-Z0-9._-]{3,50}"
+            autocomplete="username"
+          /><label for="new-password">Senha</label
+          ><input
+            id="new-password"
+            name="password"
+            type="password"
+            required
+            minlength="8"
+            maxlength="64"
+            autocomplete="new-password"
+          /><button class="secondary">Cadastrar</button>
+        </form>
+      </section>
+      <section id="workspace" hidden>
+        <div class="row">
+          <h2 id="greeting"></h2>
+          <button id="logout" class="secondary">Sair da conta</button>
+        </div>
+        <div class="card">
+          <span class="badge">Sessão autenticada</span>
+          <h2>Bem-vindo ao seu painel</h2>
+          <p>
+            Esta informação foi obtida em uma rota protegida no servidor. Ao
+            sair, sua sessão será invalidada.
+          </p>
+        </div>
+      </section>
+      <footer>
+        Java · Spring Boot · MySQL · Testes automatizados<br />As contas de
+        demonstração estão disponíveis somente no perfil demo. Consulte o
+        README.
+      </footer>
+    </main>
+  </body>
+</html>

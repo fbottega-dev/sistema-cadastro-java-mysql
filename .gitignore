@@ -1,24 +1,7 @@
-# Compilação e dependências
-/target/
-/out/
-
-# IDEs
-/.idea/
-/*.iml
-*.classpath
-*.project
-
-# Arquivos do sistema
-*.log
-*.DS_Store
-
-# Spring Boot e Maven
-mvnw
-mvnw.cmd
-/.mvn/
-
-# Secrets
-application.properties
-
-### VS Code ###
+target/
+.idea/
 .vscode/
+*.iml
+*.log
+.env
+data/

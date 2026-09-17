@@ -1,9 +1,11 @@
 package com.example.sistema_usuarios.repository;
 
 import com.example.sistema_usuarios.model.Usuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    boolean existsByUsername(String username);
-    Usuario findByUsername(String username);
+  boolean existsByUsername(String username);
+
+  Optional<Usuario> findByUsername(String username);
 }

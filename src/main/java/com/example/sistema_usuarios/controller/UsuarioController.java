@@ -1,40 +1,44 @@
 package com.example.sistema_usuarios.controller;
 
-import com.example.sistema_usuarios.model.Usuario;
-import com.example.sistema_usuarios.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.sistema_usuarios.service.UsuarioService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://127.0.0.1:5500") // porta do Live Server
 @RestController
-@RequestMapping("/usuarios")
 public class UsuarioController {
+  private final UsuarioService users;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+  public UsuarioController(UsuarioService users) {
+    this.users = users;
+  }
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+  public record Registration(
+      @NotBlank @Pattern(regexp = "[a-zA-Z0-9._-]{3,50}") String username,
+      @NotBlank @Size(min = 8, max = 64) @Pattern(regexp = "[\\x20-\\x7E]+") String password) {}
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Usuario usuario) {
-        if(usuarioRepository.existsByUsername(usuario.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe!");
-        }
-        usuario.setPassword(encoder.encode(usuario.getPassword()));
-        usuarioRepository.save(usuario);
-        return ResponseEntity.ok("Usuário registrado com sucesso!");
-    }
+  @GetMapping("/csrf")
+  public CsrfToken csrf(CsrfToken token) {
+    return token;
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Usuario usuario) {
-        Usuario u = usuarioRepository.findByUsername(usuario.getUsername());
-        if(u != null && encoder.matches(usuario.getPassword(), u.getPassword())) {
-            return ResponseEntity.ok("Login realizado com sucesso!");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou senha incorretos!");
-        }
-    }
+  @PostMapping("/usuarios/register")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Map<String, Object> register(@Valid @RequestBody Registration input) {
+    var user = users.register(input.username(), input.password());
+    return Map.of("id", user.getId(), "username", user.getUsername());
+  }
+
+  @GetMapping({"/usuarios/me", "/usuarios/home"})
+  public Map<String, Object> me(Authentication auth) {
+    return Map.of(
+        "username",
+        auth.getName(),
+        "roles",
+        auth.getAuthorities().stream().map(Object::toString).toList());
+  }
 }
