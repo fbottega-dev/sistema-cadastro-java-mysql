@@ -3,96 +3,392 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Portal de usuários</title>
+    <meta name="theme-color" content="#193e38" />
+    <title>Entrar · Portal</title>
     <link rel="stylesheet" href="/style.css" />
     <script defer src="/app.js"></script>
   </head>
   <body>
-    <header>
-      <strong>Acesso / Portal</strong
-      ><small>Projeto de portfólio · fbottega-dev</small>
+    <svg
+      class="icon-library"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <symbol id="icon-user" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
+      </symbol>
+      <symbol id="icon-lock" viewBox="0 0 24 24">
+        <rect x="5" y="10" width="14" height="11" rx="3" />
+        <path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2" />
+      </symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24">
+        <path d="M5 12h14m-5-5 5 5-5 5" />
+      </symbol>
+      <symbol id="icon-exit" viewBox="0 0 24 24">
+        <path d="M9 4H5v16h4m0-8h12m-4-4 4 4-4 4" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6" />
+      </symbol>
+    </svg>
+    <a class="skip-link" href="#main">Pular para o conteúdo</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Portal, página inicial">
+        <span class="brand-mark" aria-hidden="true"
+          ><i></i><i></i><i></i><i></i
+        ></span>
+        portal<span class="brand-dot">.</span>
+      </a>
+      <span class="header-caption">Um espaço para sua conta.</span>
     </header>
-    <main class="layout">
-      <span class="eyebrow">Identidade e acesso</span>
-      <h1>Seu acesso começa aqui.</h1>
-      <p>
-        Cadastro e autenticação com sessão, validação de dados e controle de
-        acesso.
-      </p>
-      <div id="notice" role="status" aria-live="polite"></div>
-      <section id="guest" class="grid">
-        <form id="login" class="card">
-          <h2>Entrar na conta</h2>
-          <p class="muted">Use suas credenciais para continuar.</p>
-          <label for="username">Usuário</label
-          ><input
-            id="username"
-            name="username"
-            required
-            autocomplete="username"
-          /><label for="password">Senha</label
-          ><input
-            id="password"
-            name="password"
-            type="password"
-            required
-            autocomplete="current-password"
-          /><button>Entrar</button>
-        </form>
-        <form id="register" class="card">
-          <h2>Criar uma conta</h2>
-          <p class="muted">
-            Usuário de 3 a 50 caracteres; senha de 8 a 64 caracteres ASCII.
+    <div
+      id="notice"
+      class="notice"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+    <div id="session-loading" class="session-loading" role="status">
+      Abrindo seu espaço…
+    </div>
+    <noscript
+      ><p class="noscript">
+        Ative o JavaScript para entrar e editar seu perfil.
+      </p></noscript
+    >
+    <main id="main" class="page-shell" tabindex="-1">
+      <section id="guest" class="auth-layout" hidden>
+        <div class="welcome-panel">
+          <span class="eyebrow light">SEU ESPAÇO PESSOAL</span>
+          <h1>Sua conta.<br /><span>Seu jeito.</span></h1>
+          <p>
+            Entre, escolha como quer ser chamado e deixe seu perfil com a sua
+            cara.
           </p>
-          <label for="new-user">Usuário</label
-          ><input
-            id="new-user"
-            name="username"
-            required
-            pattern="[a-zA-Z0-9._-]{3,50}"
-            autocomplete="username"
-          /><label for="new-password">Senha</label
-          ><input
-            id="new-password"
-            name="password"
-            type="password"
-            required
-            minlength="8"
-            maxlength="64"
-            autocomplete="new-password"
-          /><button class="secondary">Cadastrar</button>
-        </form>
+          <div class="profile-art" aria-hidden="true">
+            <div class="art-orbit"></div>
+            <div class="art-card art-card-back"></div>
+            <div class="art-card">
+              <div class="art-card-top">
+                <span class="art-label">MEU PERFIL</span
+                ><span class="art-dots">•••</span>
+              </div>
+              <div class="art-avatar">
+                <svg class="icon"><use href="#icon-user" /></svg>
+              </div>
+              <div class="art-line"></div>
+              <div class="art-line short"></div>
+              <div class="art-card-bottom">
+                <span class="art-pill"></span
+                ><svg class="icon"><use href="#icon-check" /></svg>
+              </div>
+            </div>
+            <span class="art-sticker"
+              ><svg class="icon"><use href="#icon-check" /></svg> Do seu
+              jeito</span
+            >
+          </div>
+          <div class="welcome-bottom">
+            <span class="little-star" aria-hidden="true">✳</span
+            ><span>O básico, bem cuidado.</span
+            ><span class="welcome-number" aria-hidden="true">01 — 02</span>
+          </div>
+        </div>
+        <div class="auth-panel">
+          <div class="auth-tabs" role="tablist" aria-label="Acesso à conta">
+            <button
+              id="login-tab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="login"
+            >
+              Entrar
+            </button>
+            <button
+              id="register-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="register"
+              tabindex="-1"
+            >
+              Criar conta
+            </button>
+          </div>
+          <form id="login" role="tabpanel" aria-labelledby="login-tab">
+            <div class="form-heading">
+              <span class="icon-box"
+                ><svg class="icon" aria-hidden="true">
+                  <use href="#icon-lock" /></svg
+              ></span>
+              <h2>Bom ter você por aqui.</h2>
+              <p>Entre para acessar seu perfil.</p>
+            </div>
+            <fieldset>
+              <label for="username">Usuário</label>
+              <div class="input-wrap">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-user" /></svg
+                ><input
+                  id="username"
+                  name="username"
+                  placeholder="Seu usuário de acesso"
+                  required
+                  autocomplete="username"
+                  autocapitalize="none"
+                  spellcheck="false"
+                />
+              </div>
+              <label for="password">Senha</label>
+              <div class="input-wrap password-wrap">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-lock" /></svg
+                ><input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Sua senha"
+                  required
+                  autocomplete="current-password"
+                /><button
+                  type="button"
+                  class="password-toggle"
+                  data-password-toggle
+                  aria-controls="password"
+                  aria-pressed="false"
+                  aria-label="Mostrar senha"
+                >
+                  Mostrar
+                </button>
+              </div>
+              <button
+                type="submit"
+                class="primary full-width"
+                data-loading-label="Entrando…"
+              >
+                <span data-button-label>Entrar</span
+                ><svg class="icon" aria-hidden="true">
+                  <use href="#icon-arrow" />
+                </svg>
+              </button>
+            </fieldset>
+            <p class="form-footnote">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-lock" />
+              </svg>
+              Seu perfil fica disponível depois de entrar.
+            </p>
+          </form>
+          <form
+            id="register"
+            role="tabpanel"
+            aria-labelledby="register-tab"
+            hidden
+          >
+            <div class="form-heading">
+              <span class="icon-box"
+                ><svg class="icon" aria-hidden="true">
+                  <use href="#icon-user" /></svg
+              ></span>
+              <h2>Vamos começar?</h2>
+              <p>Crie seu acesso. Depois, escolha seu nome no perfil.</p>
+            </div>
+            <fieldset>
+              <label for="new-user">Usuário</label>
+              <div class="input-wrap">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-user" /></svg
+                ><input
+                  id="new-user"
+                  name="username"
+                  placeholder="Ex.: ana.souza"
+                  required
+                  pattern="[a-zA-Z0-9._\-]{3,50}"
+                  minlength="3"
+                  maxlength="50"
+                  autocomplete="username"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  aria-describedby="username-help"
+                />
+              </div>
+              <p id="username-help" class="field-help">
+                De 3 a 50 caracteres: letras sem acento, números, ponto, traço
+                ou sublinhado.
+              </p>
+              <label for="new-password">Senha</label>
+              <div class="input-wrap password-wrap">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-lock" /></svg
+                ><input
+                  id="new-password"
+                  name="password"
+                  type="password"
+                  placeholder="Crie uma senha"
+                  required
+                  minlength="8"
+                  maxlength="64"
+                  pattern="[\x20-\x7E]+"
+                  autocomplete="new-password"
+                  aria-describedby="password-help"
+                /><button
+                  type="button"
+                  class="password-toggle"
+                  data-password-toggle
+                  aria-controls="new-password"
+                  aria-pressed="false"
+                  aria-label="Mostrar senha"
+                >
+                  Mostrar
+                </button>
+              </div>
+              <p id="password-help" class="field-help">
+                De 8 a 64 caracteres. Use letras sem acento, números e símbolos,
+                sem emojis.
+              </p>
+              <button
+                type="submit"
+                class="primary full-width"
+                data-loading-label="Criando…"
+              >
+                <span data-button-label>Criar conta</span
+                ><svg class="icon" aria-hidden="true">
+                  <use href="#icon-arrow" />
+                </svg>
+              </button>
+            </fieldset>
+          </form>
+        </div>
       </section>
       <section id="workspace" hidden>
-        <div class="row">
-          <h2 id="greeting"></h2>
-          <button id="logout" class="secondary">Sair da conta</button>
-        </div>
-        <form id="profile" class="card">
-          <h2>Meu perfil</h2>
-          <p>Usuário de acesso: <strong id="profile-username"></strong></p>
-          <label for="display-name">Nome de exibição</label>
-          <input
-            id="display-name"
-            name="displayName"
-            required
-            minlength="2"
-            maxlength="80"
-            autocomplete="name"
-            aria-describedby="name-help"
-          />
-          <p id="name-help" class="muted">
-            Use de 2 a 80 caracteres. Esse nome aparece no painel; seu usuário
-            para entrar na conta continua o mesmo.
+        <div class="workspace-bar">
+          <p class="breadcrumb">
+            Portal <span aria-hidden="true">/</span>
+            <strong>Minha conta</strong>
           </p>
-          <button>Salvar nome</button>
-        </form>
+          <button id="logout" type="button" class="text-button">
+            <svg class="icon" aria-hidden="true"><use href="#icon-exit" /></svg
+            >Sair da conta
+          </button>
+        </div>
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">MINHA CONTA</span>
+            <h1 id="greeting" tabindex="-1"></h1>
+            <p>
+              Um espaço para cuidar dos seus dados e deixar o perfil do seu
+              jeito.
+            </p>
+          </div>
+          <span class="status-pill"><span></span>Você está conectado</span>
+        </div>
+        <div class="profile-layout">
+          <form id="profile" class="profile-form">
+            <div class="section-heading">
+              <span class="icon-box"
+                ><svg class="icon" aria-hidden="true">
+                  <use href="#icon-user" /></svg
+              ></span>
+              <div>
+                <h2>Informações do perfil</h2>
+                <p>Os detalhes que identificam você por aqui.</p>
+              </div>
+            </div>
+            <fieldset>
+              <div class="profile-fields">
+                <div class="field-heading">
+                  <label for="display-name">Nome de exibição</label
+                  ><span
+                    id="name-count"
+                    class="character-count"
+                    aria-hidden="true"
+                    >0/80</span
+                  >
+                </div>
+                <input
+                  id="display-name"
+                  name="displayName"
+                  required
+                  minlength="2"
+                  maxlength="80"
+                  autocomplete="name"
+                  aria-describedby="name-help"
+                />
+                <p id="name-help" class="field-help">
+                  Como você quer ser chamado. Use de 2 a 80 caracteres.
+                </p>
+                <p id="login-label" class="field-label">
+                  Usuário de acesso <span class="small-tag">Fixo</span>
+                </p>
+                <div class="read-only-field" aria-labelledby="login-label">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-lock" /></svg
+                  ><span id="profile-username"></span>
+                </div>
+                <p class="field-help">
+                  Continue usando esse usuário para entrar na sua conta.
+                </p>
+              </div>
+              <div class="form-actions">
+                <p id="save-hint">Nenhuma alteração pendente.</p>
+                <div>
+                  <button id="discard" type="button" class="secondary" disabled>
+                    Descartar alterações</button
+                  ><button
+                    id="profile-save"
+                    type="submit"
+                    class="primary"
+                    data-loading-label="Salvando…"
+                    disabled
+                  >
+                    <span data-button-label>Salvar alterações</span>
+                  </button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <aside class="profile-aside" aria-label="Resumo da conta">
+            <section class="identity-card">
+              <div class="identity-cover">
+                <span>SEU PERFIL</span
+                ><span class="cover-star" aria-hidden="true">✳</span>
+              </div>
+              <div class="identity-body">
+                <div id="avatar" class="avatar" aria-hidden="true"></div>
+                <h2 id="profile-name"></h2>
+                <p id="card-username" class="handle"></p>
+                <span id="profile-role" class="role-pill"></span>
+                <div class="identity-caption">
+                  Seu nome, do jeito que aparece no portal.
+                </div>
+              </div>
+            </section>
+            <div class="account-note">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-lock" />
+              </svg>
+              <div>
+                <h3>O acesso continua o mesmo</h3>
+                <p>
+                  Alterar seu nome não muda o usuário ou a senha que você já
+                  usa.
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
       </section>
-      <footer>
-        Java · Spring Boot · MySQL · Testes automatizados<br />As contas de
-        demonstração estão disponíveis somente no perfil demo. Consulte o
-        README.
-      </footer>
     </main>
+    <footer class="site-footer">
+      <span>Portal de usuários</span
+      ><a
+        href="https://github.com/fbottega-dev/sistema-cadastro-java-mysql"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Projeto por fbottega-dev <span aria-hidden="true">↗</span></a
+      >
+    </footer>
   </body>
 </html>

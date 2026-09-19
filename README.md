@@ -6,15 +6,24 @@ Evolução de um projeto de cadastro Java: o login agora cria uma sessão autent
 
 **Stack:** Java 21 · Spring Boot 3.5 · Spring Security · JPA/Hibernate · MySQL 8.4 · Flyway · JUnit · Docker.
 
-![Aplicação em execução](docs/preview.png)
+![Tela de entrada](docs/login.png)
+
+<details>
+<summary>Ver o painel de perfil</summary>
+
+![Painel de perfil](docs/preview.png)
+
+</details>
 
 ## Funcionalidades
 
 - Cadastro com validação, usuário único e hash BCrypt; senha nunca é retornada pela API.
 - Login com sessão HTTP, cookie HttpOnly/SameSite e logout com invalidação da sessão.
 - Interface responsiva servida pela própria aplicação, sem configuração de CORS.
+- Entrada e cadastro em abas, botão para mostrar a senha e indicação de envio em andamento.
 - Painel que consulta uma rota protegida e identifica o usuário autenticado.
 - Edição do nome de exibição, mantendo o usuário de acesso, a senha e as permissões.
+- Cartão com nome e iniciais, contador de caracteres e opção de descartar alterações ainda não salvas.
 - Erros de validação e conflito retornados como respostas HTTP apropriadas.
 
 ## Executar em 3 minutos — sem instalar banco
@@ -80,9 +89,15 @@ Para executar esse teste com o Compose já ativo e Node.js 22: `node scripts/smo
 
 Para POST e PATCH, mantenha o cookie e envie o token no header retornado por /csrf. Obtenha novo token depois do login/logout. Consulte exemplos em [docs/API.md](docs/API.md).
 
-No painel, **Meu perfil** permite salvar um nome de 2 a 80 caracteres. Espaços nas pontas são removidos, e acentos e espaços internos são aceitos. O nome inicial é igual ao usuário de acesso; a migration V2 também preenche esse valor nas contas já existentes no schema V1, preservando as credenciais.
+No painel, **Informações do perfil** permite salvar um nome de 2 a 80 caracteres. Espaços nas pontas são removidos, e acentos e espaços internos são aceitos. O nome inicial é igual ao usuário de acesso; a migration V2 também preenche esse valor nas contas já existentes no schema V1, preservando as credenciais.
 
 O passo a passo está em [Como funciona a edição do nome](docs/PERFIL.md), com o caminho da requisição e um roteiro para testar e explicar a mudança.
+
+## Interface
+
+As telas usam HTML, CSS e JavaScript puro. As cores ficam nas variáveis do CSS, o layout usa Grid e as ilustrações são feitas com CSS e SVG locais. Não é necessário instalar um pacote de frontend nem carregar fontes externas.
+
+No celular, o formulário ocupa uma coluna e o cartão do perfil aparece abaixo dele. As abas também funcionam com as setas do teclado. [Como a interface está organizada](docs/INTERFACE.md).
 
 ## Organização e decisões
 

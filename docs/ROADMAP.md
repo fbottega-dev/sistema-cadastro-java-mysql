@@ -6,6 +6,7 @@
 - [x] Schema versionado e configuração externa de banco.
 - [x] Painel protegido e encerramento de sessão.
 - [x] Edição do nome de exibição sem alterar login, senha ou permissões.
+- [x] Interface de acesso e perfil com abas, cartão do usuário, descarte de alterações e adaptação para celular.
 
 ## Próximas entregas sugeridas
 - [ ] Limitar tentativas de autenticação; critério: retornar 429 após o limite configurado.
