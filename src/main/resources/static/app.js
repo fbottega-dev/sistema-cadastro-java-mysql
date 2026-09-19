@@ -1,7 +1,6 @@
 "use strict";
 const $ = (id) => document.getElementById(id);
 let currentUser = null;
-let page = 0;
 function notice(text, error = false) {
   $("notice").textContent = text;
   $("notice").classList.toggle("error", error);
@@ -61,9 +60,13 @@ async function refresh() {
   }
   $("guest").hidden = !!currentUser;
   $("workspace").hidden = !currentUser;
-  if (currentUser) {
-    $("greeting").textContent = "Olá, " + currentUser.username;
-  }
+  if (currentUser) showProfile();
+  else $("profile").reset();
+}
+function showProfile() {
+  $("greeting").textContent = "Olá, " + currentUser.displayName;
+  $("profile-username").textContent = currentUser.username;
+  $("display-name").value = currentUser.displayName;
 }
 bindForm("login", async (values) => {
   await request("/usuarios/login", {
@@ -78,6 +81,14 @@ bindForm("register", async (values) => {
   await request("/usuarios/register", json(values));
   $("register").reset();
   notice("Conta criada. Agora entre com seu usuário e senha.");
+});
+bindForm("profile", async (values) => {
+  currentUser = await request("/usuarios/me", {
+    ...json({ displayName: values.displayName }),
+    method: "PATCH",
+  });
+  showProfile();
+  notice("Nome atualizado.");
 });
 $("logout").onclick = async () => {
   try {

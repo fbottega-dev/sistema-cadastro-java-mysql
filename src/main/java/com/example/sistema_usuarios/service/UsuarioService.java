@@ -24,7 +24,23 @@ public class UsuarioService {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já cadastrado");
     var user = new Usuario();
     user.setUsername(username);
+    user.setDisplayName(username);
     user.setPassword(encoder.encode(password));
     return users.saveAndFlush(user);
+  }
+
+  @Transactional(readOnly = true)
+  public Usuario findByUsername(String username) {
+    return users
+        .findByUsername(username)
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+  }
+
+  @Transactional
+  public Usuario updateDisplayName(String username, String displayName) {
+    var user = findByUsername(username);
+    user.setDisplayName(displayName);
+    return users.save(user);
   }
 }

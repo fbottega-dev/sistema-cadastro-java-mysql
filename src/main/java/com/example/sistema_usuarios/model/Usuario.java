@@ -13,6 +13,9 @@ public class Usuario {
   @Column(nullable = false, unique = true, length = 50)
   private String username;
 
+  @Column(name = "display_name", nullable = false, length = 80)
+  private String displayName;
+
   @JsonIgnore
   @Column(nullable = false, length = 100)
   private String password;
@@ -30,6 +33,14 @@ public class Usuario {
 
   public void setUsername(String value) {
     username = value;
+  }
+
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String value) {
+    displayName = value;
   }
 
   public String getPassword() {

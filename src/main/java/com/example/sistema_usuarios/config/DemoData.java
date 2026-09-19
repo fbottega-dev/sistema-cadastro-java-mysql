@@ -16,6 +16,7 @@ public class DemoData {
         if (users.existsByUsername(name)) continue;
         var user = new Usuario();
         user.setUsername(name);
+        user.setDisplayName(name);
         user.setPassword(encoder.encode("Demo12345!"));
         user.setRole(name.equals("tecnico") ? "TECHNICIAN" : "USER");
         users.save(user);

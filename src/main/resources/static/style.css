@@ -46,6 +46,7 @@ h1 {
 h2 {
   font-size: 22px;
   margin-top: 0;
+  overflow-wrap: anywhere;
 }
 p {
   color: #526975;
@@ -136,6 +137,9 @@ a:focus-visible {
 }
 #notice.error {
   color: #a12e38;
+}
+#profile-username {
+  overflow-wrap: anywhere;
 }
 [hidden] {
   display: none !important;

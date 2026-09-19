@@ -68,14 +68,25 @@
           <h2 id="greeting"></h2>
           <button id="logout" class="secondary">Sair da conta</button>
         </div>
-        <div class="card">
-          <span class="badge">Sessão autenticada</span>
-          <h2>Bem-vindo ao seu painel</h2>
-          <p>
-            Esta informação foi obtida em uma rota protegida no servidor. Ao
-            sair, sua sessão será invalidada.
+        <form id="profile" class="card">
+          <h2>Meu perfil</h2>
+          <p>Usuário de acesso: <strong id="profile-username"></strong></p>
+          <label for="display-name">Nome de exibição</label>
+          <input
+            id="display-name"
+            name="displayName"
+            required
+            minlength="2"
+            maxlength="80"
+            autocomplete="name"
+            aria-describedby="name-help"
+          />
+          <p id="name-help" class="muted">
+            Use de 2 a 80 caracteres. Esse nome aparece no painel; seu usuário
+            para entrar na conta continua o mesmo.
           </p>
-        </div>
+          <button>Salvar nome</button>
+        </form>
       </section>
       <footer>
         Java · Spring Boot · MySQL · Testes automatizados<br />As contas de
